@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   HiMenu, 
   HiX, 
-  HiChevronDown, 
   HiSearch, 
   HiUser, 
   HiShoppingBag,
@@ -13,12 +12,11 @@ import {
   HiSun
 } from 'react-icons/hi';
 
-
 import logo from '../logo.png';
+
 function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const location = useLocation();
 
@@ -57,29 +55,11 @@ function Navbar() {
     setDarkMode(!darkMode);
   };
 
-  // Menu items avec sous-menus
+  // Menu items SANS sous-menus
   const menuItems = [
     { name: 'Home', path: '/' },
-    { 
-      name: 'Services', 
-      path: '/services',
-      dropdown: [
-        { name: 'Web Development', path: '/services/web-dev' },
-        { name: 'Mobile Apps', path: '/services/mobile' },
-        { name: 'UI/UX Design', path: '/services/design' },
-        { name: 'Consulting', path: '/services/consulting' },
-      ]
-    },
-    { 
-      name: 'Courses', 
-      path: '/courses',
-      dropdown: [
-        { name: 'Frontend Development', path: '/courses/frontend' },
-        { name: 'Backend Development', path: '/courses/backend' },
-        { name: 'Full Stack', path: '/courses/fullstack' },
-        { name: 'DevOps', path: '/courses/devops' },
-      ]
-    },
+    { name: 'Services', path: '/services' },
+    { name: 'Courses', path: '/courses' },
     { name: 'Portfolio', path: '/portfolio' },
     { name: 'Program', path: '/program' },
     { name: 'About', path: '/about' },
@@ -139,71 +119,37 @@ function Navbar() {
         }}
       >
         {/* Logo */}
-   <Link to="/" className="flex items-center space-x-2 z-50">
-  <motion.div
-    whileHover={{ scale: 1.05 }}
-    whileTap={{ scale: 0.95 }}
-    className="flex items-center"
-  >
-    <img
-      src={logo}
-      alt="EduTech Logo"
-      className="w-14 h-14 object-contain rounded-lg"
-    />
-  </motion.div>
-  <span className="text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent dark:from-violet-400 dark:to-purple-400">
-    Codons Ensemble
-  </span>
-</Link>
+        <Link to="/" className="flex items-center space-x-2 z-50">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center"
+          >
+            <img
+              src={logo}
+              alt="EduTech Logo"
+              className="w-14 h-14 object-contain rounded-lg"
+            />
+          </motion.div>
+          <span className="text-xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent dark:from-violet-400 dark:to-purple-400">
+            Codons Ensemble
+          </span>
+        </Link>
 
-        {/* Desktop Menu */}
+        {/* Desktop Menu - Version simplifiée sans dropdowns */}
         <div className="hidden lg:flex items-center space-x-1">
           {menuItems.map((item) => (
-            <div 
+            <Link
               key={item.name}
-              className="relative"
-              onMouseEnter={() => setActiveDropdown(item.name)}
-              onMouseLeave={() => setActiveDropdown(null)}
+              to={item.path}
+              className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                location.pathname === item.path
+                  ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/30 font-semibold'
+                  : 'text-gray-700 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+              }`}
             >
-              <Link
-                to={item.path}
-                className={`flex items-center px-4 py-2 rounded-lg transition-all duration-200 ${
-                  location.pathname === item.path
-                    ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/30 font-semibold'
-                    : 'text-gray-700 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-gray-50 dark:hover:bg-gray-800'
-                }`}
-              >
-                {item.name}
-                {item.dropdown && (
-                  <HiChevronDown className={`ml-1 transition-transform duration-200 ${
-                    activeDropdown === item.name ? 'rotate-180' : ''
-                  }`} />
-                )}
-              </Link>
-
-              {/* Dropdown Menu */}
-              <AnimatePresence>
-                {item.dropdown && activeDropdown === item.name && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden"
-                  >
-                    {item.dropdown.map((dropdownItem) => (
-                      <Link
-                        key={dropdownItem.name}
-                        to={dropdownItem.path}
-                        className="block px-4 py-3 text-gray-700 dark:text-gray-300 hover:bg-violet-50 dark:hover:bg-violet-900/30 hover:text-violet-600 dark:hover:text-violet-400 transition-colors duration-200 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
-                      >
-                        {dropdownItem.name}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+              {item.name}
+            </Link>
           ))}
         </div>
 
@@ -275,7 +221,7 @@ function Navbar() {
           </motion.button>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Menu - Version simplifiée */}
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
@@ -284,38 +230,22 @@ function Navbar() {
               animate="open"
               exit="closed"
               className="lg:hidden absolute top-full left-0 w-full bg-white dark:bg-gray-800 shadow-2xl border-t border-gray-200 dark:border-gray-700 overflow-hidden"
+              style={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto' }}
             >
               <div className="p-6 space-y-4">
                 {menuItems.map((item) => (
-                  <div key={item.name}>
-                    <Link
-                      to={item.path}
-                      className={`block py-3 px-4 rounded-lg transition-all duration-200 ${
-                        location.pathname === item.path
-                          ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/30 font-semibold'
-                          : 'text-gray-700 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-gray-50 dark:hover:bg-gray-700'
-                      }`}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {item.name}
-                    </Link>
-                    
-                    {/* Mobile Dropdown */}
-                    {item.dropdown && (
-                      <div className="ml-6 mt-2 space-y-2">
-                        {item.dropdown.map((dropdownItem) => (
-                          <Link
-                            key={dropdownItem.name}
-                            to={dropdownItem.path}
-                            className="block py-2 px-4 text-gray-600 dark:text-gray-400 hover:text-violet-600 dark:hover:text-violet-400 rounded-lg transition-colors duration-200"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            {dropdownItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                  <Link
+                    key={item.name}
+                    to={item.path}
+                    className={`block py-3 px-4 rounded-lg transition-all duration-200 ${
+                      location.pathname === item.path
+                        ? 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/30 font-semibold'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-violet-600 dark:hover:text-violet-400 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
                 ))}
                 
                 {/* Mobile Action Buttons */}
