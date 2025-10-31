@@ -2,10 +2,11 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer'; // ✅ Import du nouveau Footer
 import Home from './pages/Home';
 import About from './pages/About';
 import Programs from './pages/Programs';
-import Contact from './pages/Contact'; // ✅ Ajout de la page Contact
+import Contact from './pages/Contact';
 
 function App() {
   return (
@@ -14,9 +15,9 @@ function App() {
       <Navbar />
 
       {/* ✅ Contenu principal avec marge haute pour la navbar */}
-      <main className="pt-24 md:pt-28">
+      <main className="pt-24 md:pt-28 min-h-screen">
         <Routes>
-          {/* Page d’accueil */}
+          {/* Page d'accueil */}
           <Route path="/" element={<Home />} />
 
           {/* Page des programmes */}
@@ -25,15 +26,13 @@ function App() {
           {/* Page À propos */}
           <Route path="/about" element={<About />} />
 
-          {/* ✅ Nouvelle page Contact */}
+          {/* ✅ Page Contact */}
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
 
-      {/* ✅ Footer global */}
-      <footer className="bg-gradient-to-r from-purple-700 to-pink-600 text-center py-6 text-white font-semibold mt-10 shadow-inner">
-        © {new Date().getFullYear()} Techs Informatique — Tous droits réservés 💻
-      </footer>
+      {/* ✅ Nouveau Footer professionnel */}
+      <Footer />
     </div>
   );
 }

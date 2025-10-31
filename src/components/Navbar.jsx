@@ -60,8 +60,8 @@ function Navbar() {
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
     { name: 'Courses', path: '/courses' },
-    { name: 'Portfolio', path: '/portfolio' },
     { name: 'Program', path: '/program' },
+      { name: 'Blog', path: '/blog' },
     { name: 'About', path: '/about' },
     { name: 'Contact', path: '/contact' },
   ];
